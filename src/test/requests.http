@@ -1,0 +1,9 @@
+### Post to create new poems
+POST http://localhost:7076/api/v1/poem
+Content-Type: application/json
+
+{
+  "lyric": "Solen skinner solen skinner ikke, månen skinner men kun på en vinter dag"
+}
+
+###

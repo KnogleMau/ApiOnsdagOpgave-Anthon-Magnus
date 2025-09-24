@@ -14,13 +14,13 @@ public class PoemDAO {
     public PoemDAO(EntityManagerFactory emf){
         this.emf = emf;
     }
-public PoemDTO createPoem(PoemDTO poem){
+public Poem createPoem(PoemDTO poem){
         try(EntityManager em = emf.createEntityManager()){
-            Converter.DtoToEntity(poem);
+           Poem pEntity = Converter.DtoToEntity(poem);
             em.getTransaction().begin();
-            em.persist(poem);
+            em.persist(pEntity);
             em.getTransaction().commit();
-            return poem;
+            return pEntity;
         }
 }
 
