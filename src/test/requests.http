@@ -35,3 +35,5 @@ Content-Type: application/json
 
 
 ### Get jokes from Tutor
+
+GET 10.59.137.69:7070/api/poem

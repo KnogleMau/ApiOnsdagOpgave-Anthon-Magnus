@@ -73,10 +73,9 @@ public void createIntialLoadData(List<PoemDTO>poemList){
     }
 }
 public void getDataFromApi(String url){
-        List<Poem> poemList = ps.convertToEntities(url);
-        for(Poem poem : poemList){
+        Poem poem = ps.convertToEntities(url);
             poemDAO.createPoem(poem);
-        }
+
     }
 
 

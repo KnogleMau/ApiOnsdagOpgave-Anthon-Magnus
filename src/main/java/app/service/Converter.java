@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dtos.LimerickDTO;
 import app.dtos.PoemDTO;
 import app.dtos.PoemResponseDTO;
 import app.entities.Poem;
@@ -14,6 +15,12 @@ public class Converter {
 
         return Poem.builder()
                 .lyric(poemDTO.getLyric())
+                .build();
+    }
+    public Poem LimerickDtoToEntity(LimerickDTO limerickDTO){
+
+        return Poem.builder()
+                .lyric(limerickDTO.getBody())
                 .build();
     }
 

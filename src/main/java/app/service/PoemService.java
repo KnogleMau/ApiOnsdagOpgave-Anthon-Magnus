@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dtos.LimerickDTO;
 import app.dtos.PoemDTO;
 import app.dtos.PoemResponseDTO;
 import app.entities.Poem;
@@ -12,16 +13,16 @@ public class PoemService {
     ApiService api = new ApiService();
     Converter converter = new Converter();
 
-    public PoemResponseDTO getPoemsApi(String url){
-        return api.fetchData(url, PoemResponseDTO.class);
+    public LimerickDTO getPoemsApi(String url){
+        return api.fetchData(url, LimerickDTO.class);
     }
 
-    public List<Poem> convertToEntities(String url){
-        PoemResponseDTO responseDTO = getPoemsApi(url);
-        if(responseDTO == null){
+    public Poem convertToEntities(String url){
+        LimerickDTO limerickDTO = getPoemsApi(url);
+        if(limerickDTO == null){
             System.out.println("Fejl, ingen data");
         }
-        return converter.convertToEntities(responseDTO);
+        return converter.LimerickDtoToEntity(limerickDTO);
     }
 
 

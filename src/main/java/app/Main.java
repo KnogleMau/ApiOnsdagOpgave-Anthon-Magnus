@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
 PoemController poemC = new PoemController();
         ListPoems p = new ListPoems();
-        String url = "5.179.80.205:7007/api/v1/poem";
+        String url = "http://10.59.137.69:7070/api/poem/1";
 
         System.out.println("Beer Demo");
         ApplicationConfig.startServer(7076);

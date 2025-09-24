@@ -19,7 +19,6 @@ public class ApiService {
 
             HttpRequest request = HttpRequest
                     .newBuilder()
-                    .header("Accept", "application/json")
                     .uri(new URI(uri))
                     .GET()
                     .build();
