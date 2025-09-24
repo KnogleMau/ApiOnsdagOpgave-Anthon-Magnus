@@ -10,6 +10,8 @@ import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class PoemController {
     private final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
@@ -17,6 +19,13 @@ public class PoemController {
 
     private static final Logger logger = LoggerFactory.getLogger(PoemController.class);
     private static final Logger debugLogger = LoggerFactory.getLogger("app");
+
+    public void getAllPoems(Context ctx){
+        List<PoemDTO> poemDTOs = poemDAO.getAllPoems();
+        ctx.status(HttpStatus.OK);
+        ctx.json(poemDTOs);
+        logger.info("Fetched all highscores, count: " + poemDTOs.size());
+    }
 
 
 public void createPoem(Context ctx){
@@ -44,6 +53,12 @@ public void findPoem(Context ctx){
 
 public void deletePoem(Context ctx){
 
+}
+
+public void createIntialLoadData(List<PoemDTO>poemList){
+    for(PoemDTO poemDTO : poemList){
+        poemDAO.createPoem(poemDTO);
+    }
 }
 
 

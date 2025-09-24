@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.dtos.PoemDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,4 +22,11 @@ public class Poem {
     private int id;
 
     private String lyric;
+
+
+    public Poem(PoemDTO poemDTO)
+    {
+        this.id = poemDTO.getId();
+        this.lyric = poemDTO.getLyric();
+    }
 }

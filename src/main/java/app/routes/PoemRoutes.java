@@ -11,8 +11,12 @@ PoemController poemController = new PoemController();
 
     public EndpointGroup getRoutes(){
         return () -> {
+
+          get("/", poemController::getAllPoems);
           get("/{id}", poemController::findPoem);
           post("/", poemController::createPoem);
+
+
         };
     }
 }
