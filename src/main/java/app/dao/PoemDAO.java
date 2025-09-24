@@ -1,6 +1,12 @@
 package app.dao;
 
+import app.dtos.PoemDTO;
+import app.entities.Poem;
+import app.service.Converter;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
+import static java.lang.module.ModuleDescriptor.read;
 
 public class PoemDAO {
     private EntityManagerFactory emf;
@@ -8,5 +14,32 @@ public class PoemDAO {
     public PoemDAO(EntityManagerFactory emf){
         this.emf = emf;
     }
+public PoemDTO createPoem(PoemDTO poem){
+        try(EntityManager em = emf.createEntityManager()){
+            Converter.DtoToEntity(poem);
+            em.getTransaction().begin();
+            em.persist(poem);
+            em.getTransaction().commit();
+            return poem;
+        }
+}
 
+public PoemDTO findPoemById(int id){
+        try(EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            PoemDTO foundPoem = em.find(PoemDTO.class, id);
+            em.getTransaction().commit();
+            return foundPoem;
+        }
+}
+    public void deletePoem(int id) {
+        try(var em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            Poem poem = em.find(Poem.class, id);
+            if (poem != null) {
+                em.remove(poem);
+            }
+            em.getTransaction().commit();
+        }
+    }
 }

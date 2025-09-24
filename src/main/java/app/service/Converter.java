@@ -3,13 +3,12 @@ package app.service;
 import app.dtos.PoemDTO;
 import app.entities.Poem;
 
-public class DtoToEntity {
+public class Converter {
 
 
-    public Poem DtoToEntity(PoemDTO poemDTO){
+    public static Poem DtoToEntity(PoemDTO poemDTO){
 
         return Poem.builder()
-                .id(poemDTO.getId())
                 .lyric(poemDTO.getLyric())
                 .build();
     }
