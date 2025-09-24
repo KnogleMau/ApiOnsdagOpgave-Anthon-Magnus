@@ -7,7 +7,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.module.ModuleDescriptor.read;
@@ -15,12 +14,24 @@ import static java.lang.module.ModuleDescriptor.read;
 public class PoemDAO {
     private EntityManagerFactory emf;
 
+    Converter converter = new Converter();
+
     public PoemDAO(EntityManagerFactory emf){
         this.emf = emf;
     }
-public Poem createPoem(PoemDTO poem){
+
+
+    public void createPoem(Poem poem){
         try(EntityManager em = emf.createEntityManager()){
-           Poem pEntity = Converter.DtoToEntity(poem);
+            em.getTransaction().begin();
+            em.persist(poem);
+            em.getTransaction().commit();
+        }
+    }
+
+public Poem createPoemFromDTO(PoemDTO poem){
+        try(EntityManager em = emf.createEntityManager()){
+           Poem pEntity = converter.DtoToEntity(poem);
             em.getTransaction().begin();
             em.persist(pEntity);
             em.getTransaction().commit();
@@ -38,6 +49,21 @@ public PoemDTO findPoemById(int id){
             }
         }
 }
+
+    public PoemDTO updatePoem(int id, PoemDTO poemDTO) {
+        try(EntityManager em = emf.createEntityManager()) {
+
+            Poem poem = em.find(Poem.class, id);
+            if (poem != null) {
+                var tx = em.getTransaction();
+                tx.begin();
+                poem.setLyric(poemDTO.getLyric());
+                em.merge(poem);
+                tx.commit();
+            }
+            return new PoemDTO(poem);
+        }
+    }
     public void deletePoem(int id) {
         try(var em = emf.createEntityManager()) {
             em.getTransaction().begin();

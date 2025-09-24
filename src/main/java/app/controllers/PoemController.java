@@ -4,6 +4,7 @@ import app.config.HibernateConfig;
 import app.dao.PoemDAO;
 import app.dtos.PoemDTO;
 import app.entities.Poem;
+import app.service.PoemService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManagerFactory;
@@ -15,6 +16,7 @@ import java.util.List;
 public class PoemController {
     private final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
+    PoemService ps = new PoemService();
     PoemDAO poemDAO = new PoemDAO(emf);
 
     private static final Logger logger = LoggerFactory.getLogger(PoemController.class);
@@ -31,7 +33,7 @@ public class PoemController {
 public void createPoem(Context ctx){
     PoemDTO poemDTO = ctx.bodyAsClass(PoemDTO.class);
 
-    Poem newPoem = poemDAO.createPoem(poemDTO);
+    Poem newPoem = poemDAO.createPoemFromDTO(poemDTO);
     ctx.status(HttpStatus.OK);
     ctx.json(newPoem);
 }
@@ -51,15 +53,31 @@ public void findPoem(Context ctx){
 
 }
 
-public void deletePoem(Context ctx){
+public void updatePoem(Context ctx){
+int id = Integer.parseInt(ctx.pathParam("id"));
+PoemDTO poemDTO = ctx.bodyAsClass(PoemDTO.class);
+poemDTO = poemDAO.updatePoem(id,poemDTO);
+ctx.status(HttpStatus.OK);
+ctx.json(poemDTO);
+}
 
+public void deletePoem(Context ctx){
+int id = Integer.parseInt(ctx.pathParam("id"));
+poemDAO.deletePoem(id);
+ctx.result("Highscore with id " + id + " deleted");
 }
 
 public void createIntialLoadData(List<PoemDTO>poemList){
     for(PoemDTO poemDTO : poemList){
-        poemDAO.createPoem(poemDTO);
+        poemDAO.createPoemFromDTO(poemDTO);
     }
 }
+public void getDataFromApi(String url){
+        List<Poem> poemList = ps.convertToEntities(url);
+        for(Poem poem : poemList){
+            poemDAO.createPoem(poem);
+        }
+    }
 
 
 
